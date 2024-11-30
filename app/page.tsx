@@ -1,101 +1,162 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import { 
+  Code, 
+  Gamepad2, 
+  School,
+  ArrowRight 
+} from 'lucide-react';
+import CenteringTechnique from '@/components/CenteringTechnique';
+import CenteringPlayground from '@/components/CenteringPlayground';
+import CenteringTutorials from '@/components/CenteringTutorials';
+import CenteringQuiz from '@/components/CenteringQuiz';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [activeSection, setActiveSection] = useState<'techniques' | 'playground' | 'tutorials' | 'quiz'>('techniques');
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const sections = [
+    {
+      id: 'techniques',
+      title: 'Centering Techniques',
+      icon: <Code />,
+      component: <TechniquesSection />
+    },
+    {
+      id: 'playground',
+      title: 'Interactive Playground',
+      icon: <Gamepad2 />,
+      component: <CenteringPlayground />
+    },
+    {
+      id: 'tutorials',
+      title: 'Detailed Tutorials',
+      icon: <School />,
+      component: <CenteringTutorials />
+    },
+    {
+      id: 'quiz',
+      title: 'Challenge Quiz',
+      icon: <School />,
+      component: <CenteringQuiz />
+    }
+  ];
+
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 selection:bg-indigo-200">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        {/* Header */}
+        <header className="text-center mb-12">
+          <h1 className="text-4xl font-extrabold text-gray-900 mb-4 
+            bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600">
+            CSS Centering Mastery
+          </h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Explore powerful techniques to center elements with precision and elegance
+          </p>
+        </header>
+
+        {/* Section Navigation */}
+        <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 mb-12 px-4">
+          {sections.map((section) => (
+            <button
+              key={section.id}
+              onClick={() => setActiveSection(section.id as 'techniques' | 'playground' | 'tutorials' | 'quiz')}
+              className={`
+                group flex items-center justify-center p-4 sm:px-6
+                rounded-xl sm:rounded-full
+                transition-all duration-300 ease-in-out
+                shadow-sm hover:shadow-md
+                ${activeSection === section.id 
+                  ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white' 
+                  : 'bg-white/80 text-gray-700 hover:bg-gray-50'
+                }
+              `}
+            >
+              <span className="mr-3">{section.icon}</span>
+              <span className="font-medium">{section.title}</span>
+              {activeSection !== section.id && (
+                <ArrowRight 
+                  className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                  size={18} 
+                />
+              )}
+            </button>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+
+        {/* Active Section Content with transition */}
+        <div className="transition-all duration-300 ease-in-out">
+          {sections.find(s => s.id === activeSection)?.component}
+        </div>
+      </div>
+    </main>
+  );
+}
+
+function TechniquesSection() {
+  const centeringTechniques = [
+    {
+      id: 'flexbox',
+      title: 'Flexbox: The Flexible Friend',
+      icon: <Code />,
+      description: 'Flexbox is like a yoga instructor for your divs - helping them find their center with grace and flexibility!',
+      code: `
+// Flexbox Centering Magic 🪄
+.parent {
+  display: flex;
+  justify-content: center;  // Horizontal centering
+  align-items: center;      // Vertical centering
+}`
+    },
+    {
+      id: 'grid',
+      title: 'CSS Grid: The Architectural Mastermind',
+      icon: <Code />,
+      description: 'CSS Grid treats your layout like a meticulously planned city - everything has its perfect place!',
+      code: `
+// Grid Centering Wizardry 🧙‍♂️
+.parent {
+  display: grid;
+  place-items: center;  // One-line centering magic!
+}`
+    },
+    {
+      id: 'absolute',
+      title: 'Absolute Positioning: The Rebel Technique',
+      icon: <Code />,
+      description: 'Absolute positioning is like a GPS for your div - telling it exactly where to land!',
+      code: `
+// Absolute Positioning Sorcery 🔮
+.parent {
+  position: relative;
+}
+.child {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}`
+    }
+  ];
+
+  return (
+    <div className="max-w-3xl mx-auto space-y-6 sm:space-y-8 px-4">
+      {centeringTechniques.map((technique, index) => (
+        <div 
+          key={technique.id}
+          className="transform transition-all duration-500 ease-in-out hover:scale-[1.02] 
+            bg-white rounded-2xl shadow-lg hover:shadow-xl 
+            border border-gray-100 overflow-hidden"
+          style={{
+            transitionDelay: `${index * 100}ms`
+          }}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+          <CenteringTechnique 
+            {...technique} 
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        </div>
+      ))}
     </div>
   );
 }

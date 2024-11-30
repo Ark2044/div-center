@@ -11,6 +11,11 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        'code-bg': '#1E1E1E',
+        'code-text': '#D4D4D4',
+      },
+      animation: {
+        'bounce-slow': 'bounce 2s infinite',
       },
     },
   },
