@@ -49,7 +49,7 @@ export default function Home() {
         <header className="text-center mb-12">
           <h1 className="text-4xl font-extrabold text-gray-900 mb-4 
             bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600">
-            CSS Centering Mastery
+            Div Centering Wizardry
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Explore powerful techniques to center elements with precision and elegance
